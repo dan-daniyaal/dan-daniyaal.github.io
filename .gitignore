@@ -1,0 +1,14 @@
+# Local tooling
+.claude/
+.vscode/
+Thumbs.db
+.DS_Store
+
+# Full-resolution source images (web versions are the .webp files)
+assets/scroll/src/
+
+# Private: kept locally, never published
+# - report notes (for the Friday report, not for recruiters)
+BUILD_LOG.md
+# - old design demos with outdated project claims
+_mockup/
