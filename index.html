@@ -24,17 +24,29 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Yuji+Syuku&family=Shippori+Mincho:wght@800&display=swap" rel="stylesheet" />
   <!-- ?v= is a cache-buster: bump it when the file changes so browsers fetch the new version -->
-  <link rel="stylesheet" href="css/styles.css?v=7" />
+  <link rel="stylesheet" href="css/styles.css?v=8" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- ===== Intro: hand signs → release (plays once per visit) ===== -->
+  <!-- ===== Intro: Summoning Jutsu (plays once per visit) ===== -->
   <div class="intro" id="intro" aria-hidden="true">
-    <div class="intro-half a"></div>
-    <div class="intro-half b"></div>
-    <div class="intro-slash"></div>
-    <div class="intro-sign" id="introSign"><b>子</b><small>RAT</small></div>
+    <div class="intro-bg"></div>
+    <svg class="intro-formula" viewBox="0 0 400 400">
+      <circle cx="200" cy="200" r="190" />
+      <circle class="ink" cx="200" cy="200" r="150" style="--len: 943" />
+      <circle class="ink" cx="200" cy="200" r="70" style="--len: 440" />
+      <line class="ink" x1="200" y1="50" x2="200" y2="130" style="--len: 80" />
+      <line class="ink" x1="200" y1="270" x2="200" y2="350" style="--len: 80" />
+      <line class="ink" x1="50" y1="200" x2="130" y2="200" style="--len: 80" />
+      <line class="ink" x1="270" y1="200" x2="350" y2="200" style="--len: 80" />
+      <text x="192" y="38">召</text><text x="192" y="382">喚</text>
+      <text x="10" y="208">契</text><text x="370" y="208">約</text>
+    </svg>
+    <div class="intro-sign" id="introSign"><b>亥</b><small>BOAR</small></div>
+    <div class="intro-seals" id="introSeals"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="intro-jutsu"><b lang="ja">口寄せの術</b><small>SUMMONING JUTSU</small></div>
+    <canvas class="intro-rim" id="introRim"></canvas>
     <button class="intro-skip" id="introSkip" tabindex="-1">SKIP →</button>
   </div>
 
@@ -486,6 +498,6 @@
 
   <div class="toast cut" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/main.js?v=4"></script>
+  <script src="js/main.js?v=5"></script>
 </body>
 </html>

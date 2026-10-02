@@ -10,5 +10,6 @@ assets/scroll/src/
 # Private: kept locally, never published
 # - report notes (for the Friday report, not for recruiters)
 BUILD_LOG.md
+REPORT.md
 # - old design demos with outdated project claims
 _mockup/

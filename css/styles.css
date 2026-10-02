@@ -91,31 +91,55 @@ img, svg { display: block; max-width: 100%; }
 .text-link:hover { color: var(--text); border-color: var(--text); }
 
 /* =========================================================
-   INTRO: hand signs → release
+   INTRO: Summoning Jutsu
+   Real hand signs (Boar → Dog → Bird → Monkey → Ram), then
+   口寄せの術 over an inked summoning circle. The circle flashes
+   orange and an opening grows from its centre to reveal the site.
    ========================================================= */
 .intro { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; }
-.intro-half { position: absolute; inset: 0; background: var(--ink); transition: transform .7s cubic-bezier(.8,0,.2,1); }
-.intro-half.a { clip-path: polygon(0 0, 100% 0, 0 100%); }
-.intro-half.b { clip-path: polygon(100% 0, 100% 100%, 0 100%); }
-.intro.done .intro-half.a { transform: translate(-60%, -60%); }
-.intro.done .intro-half.b { transform: translate(60%, 60%); }
-.intro-slash {
-  position: absolute; left: -10%; right: -10%; top: 50%; height: 2px;
-  background: var(--orange); transform: rotate(-39deg) scaleX(0); transition: transform .25s ease-out;
-}
-.intro.slashing .intro-slash { transform: rotate(-39deg) scaleX(1); }
-.intro.done .intro-slash { opacity: 0; transition: opacity .2s; }
-.intro-sign { position: relative; text-align: center; transition: opacity .2s; }
-.intro-sign b { display: block; font-family: var(--font-kanji); font-weight: 800; font-size: clamp(120px, 22vw, 240px); line-height: 1; }
-.intro-sign small { display: block; margin-top: 14px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .3em; color: var(--muted); }
-.intro-sign.release b { color: var(--orange); }
+.intro-bg { position: absolute; inset: 0; background: var(--ink); }
+
+.intro-sign { position: relative; text-align: center; transition: opacity .15s; }
+.intro-sign b { display: block; font-family: var(--font-kanji); font-weight: 800; font-size: clamp(120px, 22vw, 230px); line-height: 1; }
+.intro-sign small { display: block; margin-top: 12px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .32em; color: var(--muted); }
+.intro-sign.pop b { animation: sign-pop .2s ease-out; }
+@keyframes sign-pop { from { transform: scale(1.18); opacity: .4; } to { transform: none; opacity: 1; } }
+
+.intro-seals { position: absolute; left: 50%; bottom: 14vh; transform: translateX(-50%); display: flex; gap: 14px; transition: opacity .15s; }
+.intro-seals i { width: 10px; height: 10px; border: 1.5px solid #4a443d; rotate: 45deg; transition: background .15s, border-color .15s; }
+.intro-seals i.on { background: var(--orange); border-color: var(--orange); }
+
+/* summoning circle, flattened like it's drawn on the floor */
+.intro-formula { position: absolute; left: 50%; top: 50%; width: min(520px, 84vw); aspect-ratio: 1; transform: translate(-50%, -50%) scaleY(.36); opacity: 0; }
+.intro-formula circle, .intro-formula line { fill: none; stroke: #2a2420; stroke-width: 2; }
+.intro-formula .ink { stroke: var(--text); stroke-dasharray: var(--len); stroke-dashoffset: var(--len); }
+.intro-formula text { font-family: var(--font-kanji); font-weight: 800; font-size: 22px; fill: var(--text); opacity: 0; }
+
+.intro-jutsu { position: absolute; text-align: center; opacity: 0; transform: scale(1.35); }
+.intro-jutsu b { display: block; font-family: var(--font-brush); font-size: clamp(60px, 12vw, 140px); line-height: 1; letter-spacing: .06em; }
+.intro-jutsu small { display: block; margin-top: 14px; font-family: var(--font-mono); font-size: 13px; letter-spacing: .4em; color: var(--orange); }
+
+/* casting: name slams in, circle is inked */
+.intro.casting .intro-sign, .intro.casting .intro-seals { opacity: 0; }
+.intro.casting .intro-jutsu { opacity: 1; transform: none; transition: opacity .12s, transform .3s cubic-bezier(.2,1.4,.4,1); }
+.intro.casting .intro-formula { opacity: 1; transition: opacity .2s; }
+.intro.casting .intro-formula .ink { stroke-dashoffset: 0; transition: stroke-dashoffset .55s cubic-bezier(.6,0,.2,1); }
+.intro.casting .intro-formula text { opacity: .8; transition: opacity .3s .25s; }
+
+/* release: circle flashes orange, everything clears as the opening grows */
+.intro.release .intro-formula { opacity: 0; filter: drop-shadow(0 0 14px rgba(255,106,19,.8)); transition: opacity .5s .35s; }
+.intro.release .intro-formula .ink { stroke: var(--orange); }
+.intro.release .intro-formula text { fill: var(--orange); }
+.intro.release .intro-jutsu { opacity: 0; transform: scale(.92); transition: opacity .35s .2s, transform .5s .2s; }
+.intro.release .intro-jutsu small { color: var(--text); }
+.intro-rim { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
 .intro-skip {
   position: absolute; right: 24px; bottom: 24px;
   border: 1px solid var(--line); color: var(--muted);
   font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; padding: 8px 14px;
 }
-.intro.slashing .intro-sign, .intro.done .intro-sign,
-.intro.slashing .intro-skip, .intro.done .intro-skip { opacity: 0; }
+.intro.release .intro-skip { opacity: 0; }
 .intro.gone { display: none; }
 
 /* =========================================================

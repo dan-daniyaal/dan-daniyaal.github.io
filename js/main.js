@@ -72,13 +72,19 @@ function startReveals() {
 }
 
 /* ---------------------------------------------------------
-   1. Intro: hand signs → release (once per visit)
+   1. Intro: Summoning Jutsu (once per visit)
+      Real hand signs → 口寄せの術 + summoning circle → the circle
+      flashes and an opening grows from its centre to reveal the site.
    --------------------------------------------------------- */
 (function intro() {
   const intro = $('#intro');
   const sign = $('#introSign');
-  const signs = [['子', 'RAT'], ['丑', 'OX'], ['寅', 'TIGER'], ['卯', 'HARE'], ['辰', 'DRAGON'], ['解', 'RELEASE']];
+  const seals = $$('#introSeals i');
+  const bg = $('.intro-bg');
+  const rim = $('#introRim');
+  const signs = [['亥', 'BOAR'], ['戌', 'DOG'], ['酉', 'BIRD'], ['申', 'MONKEY'], ['未', 'RAM']];
   const timers = [];
+  let finished = false;
 
   let seen = false;
   try { seen = sessionStorage.getItem('introSeen') === '1'; } catch (e) { /* storage blocked */ }
@@ -93,26 +99,59 @@ function startReveals() {
 
   document.body.style.overflow = 'hidden';
 
-  function finish() {
+  // Release: grow a circular opening in the black overlay (a radial mask),
+  // with a fading orange rim drawn on a canvas along its edge.
+  function release() {
+    if (finished) return;
+    finished = true;
     timers.forEach(clearTimeout);
-    intro.classList.add('slashing');
-    setTimeout(() => intro.classList.add('done'), 220);
-    setTimeout(() => {
+    intro.classList.add('casting', 'release');
+
+    const ctx = rim.getContext('2d');
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    rim.width = innerWidth * dpr; rim.height = innerHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const cx = innerWidth / 2, cy = innerHeight / 2;
+    const maxR = Math.hypot(innerWidth, innerHeight) / 2 + 40;
+    const start = performance.now() + 260; // let the orange flash land first
+
+    (function frame(now) {
+      const t = Math.min(1, Math.max(0, now - start) / 700);
+      const R = (1 - Math.pow(1 - t, 3)) * maxR;
+      const mask = `radial-gradient(circle at 50% 50%, transparent ${R}px, #000 ${R + 2}px)`;
+      bg.style.webkitMaskImage = mask;
+      bg.style.maskImage = mask;
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      if (t > 0 && t < 1) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255,106,19,${1 - t})`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+      if (t < 1) return requestAnimationFrame(frame);
       intro.classList.add('gone');
       document.body.style.overflow = '';
       startReveals();
-    }, 950);
+    })(performance.now());
   }
 
+  const STEP = 230;
   signs.forEach(([kanji, name], i) => {
     timers.push(setTimeout(() => {
       // textContent (not innerHTML) so nothing here can ever be parsed as HTML
       sign.querySelector('b').textContent = kanji;
       sign.querySelector('small').textContent = name;
-      sign.classList.toggle('release', kanji === '解');
-    }, 180 + i * 170));
+      sign.classList.remove('pop');
+      void sign.offsetWidth; // restart the pop animation
+      sign.classList.add('pop');
+      seals[i].classList.add('on');
+    }, 200 + i * STEP));
   });
-  timers.push(setTimeout(finish, 180 + signs.length * 170 + 260));
+  const castAt = 200 + signs.length * STEP + 120;
+  timers.push(setTimeout(() => intro.classList.add('casting'), castAt)); // 口寄せの術 + circle
+  timers.push(setTimeout(release, castAt + 750));                          // flash + reveal
+  const finish = release; // skip button / any key jumps straight to the reveal
 
   $('#introSkip').addEventListener('click', finish);
   addEventListener('keydown', function skipOnKey() {
