@@ -2,10 +2,10 @@
 
 My personal portfolio: a sharp, Naruto-inspired site for my work as an Information Systems Engineering student at Stony Brook.
 
-**Live:** https://dan-daniyaal.github.io _(coming soon)_
+**Live:** https://dan-daniyaal.github.io
 
 ## Features
-- **Hand-sign intro**: 子 丑 寅 卯 辰 → 解 (release), then a diagonal slash reveals the page. Plays once per visit and is skipped for reduced-motion users.
+- **Hand-sign intro**: summoning jutsu, then a diagonal slash reveals the page. Plays once per visit and is skipped for reduced-motion users.
 - **Shuriken cursor** that spins faster the faster you move (desktop only).
 - **Ninja registration card** hero with a stamped 合格 seal.
 - **Projects as scrolls** with S / A / B rank seals.
